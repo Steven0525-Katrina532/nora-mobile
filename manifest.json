@@ -1,13 +1,20 @@
 ﻿{
-  "name": "NORA Mobile",
-  "short_name": "NORA",
-  "start_url": ".",
-  "scope": ".",
-  "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#000000",
-  "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
-  ]
+    "theme_color":  "#000000",
+    "name":  "NORA Mobile",
+    "display":  "standalone",
+    "short_name":  "NORA",
+    "background_color":  "#2bc1c6",
+    "start_url":  "./",
+    "icons":  [
+                  {
+                      "type":  "image/png",
+                      "sizes":  "192x192",
+                      "src":  "icons/icon-192.png"
+                  },
+                  {
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-512.png"
+                  }
+              ]
 }

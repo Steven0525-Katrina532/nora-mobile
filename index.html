@@ -64,6 +64,30 @@ input[type="time"]::-webkit-datetime-edit-hour-field,
 input[type="time"]::-webkit-datetime-edit-minute-field,
 input[type="time"]::-webkit-datetime-edit-second-field,
 input[type="time"]::-webkit-datetime-edit-ampm-field{ color:#ffffff }
+  /* === Mobile input width + overflow fixes === */
+.grid > div { min-width: 0 }                 /* allow grid items to shrink */
+input, select, textarea {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;                              /* iOS: prevent UA min-width overflow */
+}
+
+/* iOS Safari tends to make date/time wider; clamp them */
+input[type="date"],
+input[type="time"] {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  display: block;
+}
+
+/* Uniform control height to match TZ select */
+input, select { height: 48px }               /* adjust if you want 44/52 later */
+
+/* iOS zoom quirk: keep font-size >=16px so it won't auto-zoom the field */
+@supports (-webkit-touch-callout: none) {
+  input, select { font-size: 16px }
+}
   </style>
 
   <link rel='apple-touch-icon' sizes='180x180' href='apple-touch-icon-180.png'>
@@ -331,6 +355,7 @@ input[type="time"]::-webkit-datetime-edit-ampm-field{ color:#ffffff }
   </script>
 </body>
 </html>
+
 
 
 

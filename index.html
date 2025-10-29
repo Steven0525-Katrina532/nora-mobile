@@ -56,6 +56,15 @@
     .confirm-note{ color:#ffffff; font-size:13px; text-align:center; margin-top:10px; font-weight:800 }
     .danger{color:#ffb4b4}
     .checkbox{width:auto; accent-color:#4f46e5}
+  /* === High-contrast time input === */
+input[type="time"]{ color:#ffffff; caret-color:#ffffff }
+input[type="time"]::-webkit-calendar-picker-indicator{ filter: invert(1) brightness(1.8); opacity:0.9 }
+input[type="time"]::-webkit-datetime-edit{ color:#ffffff }
+input[type="time"]::-webkit-datetime-edit-text,
+input[type="time"]::-webkit-datetime-edit-hour-field,
+input[type="time"]::-webkit-datetime-edit-minute-field,
+input[type="time"]::-webkit-datetime-edit-second-field,
+input[type="time"]::-webkit-datetime-edit-ampm-field{ color:#ffffff }
   </style>
 </head>
 <body>
@@ -321,3 +330,4 @@
   </script>
 </body>
 </html>
+

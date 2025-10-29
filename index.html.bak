@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NORA Mobile</title>
   <meta name="theme-color" content="#000000" />
+  <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <script>
@@ -101,13 +103,8 @@ form select, form textarea {
 #pickupDate,#pickupTime,#orTime,#callerPhone{ width:100%; max-width:100%; height:48px; }
 </style>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="apple-touch-icon" sizes="180x180" href="/nora-mobile/apple-touch-icon-180.png?v=20251029192447">
-<link rel="apple-touch-icon" href="/nora-mobile/apple-touch-icon.png?v=20251029192447">
-<link rel="icon" href="/nora-mobile/icons/icon-192.png?v=20251029192447" sizes="192x192">
-<link rel="icon" href="/nora-mobile/icons/icon-512.png?v=20251029192447" sizes="512x512">
-<link rel="manifest" href="/nora-mobile/manifest.webmanifest?v=20251029192447">
-<meta name="theme-color" content="#1a73e8">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180.png?v=4">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=4">
 </head>
 <body>
   <div class="header">
@@ -372,7 +369,6 @@ form select, form textarea {
   </script>
 </body>
 </html>
-
 
 
 

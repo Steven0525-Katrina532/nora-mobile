@@ -1,0 +1,10 @@
+﻿{
+  "name": "NORA Mobile",
+  "short_name": "NORA",
+  "start_url": "/nora-mobile/",
+  "scope": "/nora-mobile/",
+  "display": "standalone",
+  "background_color": "#0b1221",
+  "theme_color": "#1a73e8",
+  "icons": []
+}

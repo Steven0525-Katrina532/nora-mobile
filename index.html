@@ -1,0 +1,308 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NORA Mobile</title>
+  <meta name="theme-color" content="#000000" />
+
+  <!-- PWA hooks -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(()=>{});
+      });
+    }
+  </script>
+
+  <style>
+    :root{
+      --bg:#2bc1c6;       /* aqua page background */
+      --header:#000000;   /* black header */
+      --card:#141517; --border:#2a2d33; --text:#ffffff; --muted:#dfe6ea; --accent:#4f46e5;
+      --chip:#1c1d21; --chipBorder:#2a2d33;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:16px system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    a{color:inherit;text-decoration:none}
+
+    /* Bigger, responsive header */
+    .header{
+      position:sticky; top:0; z-index:20;
+      background:var(--header); color:#e9f9f9;
+      padding: clamp(14px, 2.4vw, 22px) clamp(16px, 2.5vw, 28px);
+      display:flex; align-items:center; justify-content:space-between;
+      border-bottom:1px solid #0f0f0f;
+    }
+    .h-left{display:flex; align-items:center; gap: clamp(10px, 1.5vw, 16px)}
+    .logo{height: clamp(40px, 6vw, 64px); width:auto; display:block}
+    .brand{font-size: clamp(24px, 5vw, 44px); font-weight:900; letter-spacing:.6px}
+
+    .phone{
+      display:inline-flex; align-items:center; gap: clamp(6px, 1vw, 12px);
+      background:#ffffff; color:#0b3d3f;
+      border-radius:12px; padding: clamp(8px, 1.5vw, 14px) clamp(12px, 2vw, 18px);
+      font-weight:800; font-size: clamp(14px, 2.4vw, 20px);
+      box-shadow:0 2px 8px rgb(0 0 0 / .25);
+    }
+    .phone .icon{font-style:normal; font-size: inherit}
+
+    .wrap{
+      max-width: clamp(320px, 92vw, 900px);
+      margin:0 auto; padding: clamp(12px, 3vw, 22px) clamp(12px, 3vw, 22px) 48px;
+    }
+    .card{
+      background:var(--card); border:1px solid var(--border);
+      border-radius:16px; padding: clamp(12px, 2.5vw, 20px);
+      box-shadow:0 2px 10px rgb(0 0 0 /.25)
+    }
+    .grid{display:grid; grid-template-columns:1fr; gap:12px}
+    @media(min-width:680px){ .grid.cols-2{grid-template-columns:1fr 1fr} .grid.cols-3{grid-template-columns:1fr 1fr 1fr}}
+    label{display:block; color:#cfe5ea; font-weight:700; margin:6px 2px}
+    input,select,textarea,button{width:100%; border-radius:12px; border:1px solid var(--border); background:#16171a; color:#fff; padding:12px 14px}
+    textarea{min-height:96px; resize:vertical}
+    .btn{background:var(--accent); font-weight:800; cursor:pointer}
+    .btn:active{transform:scale(.98)}
+    .hint{color:#0b3d3f; font-weight:700; text-align:center; margin-top:12px}
+    .confirm-note{ color:#073c3e; font-size:13px; text-align:center; margin-top:10px }
+    .danger{color:#ffb4b4}
+  </style>
+</head>
+<body>
+  <!-- BIG HEADER -->
+  <div class="header">
+    <div class="h-left">
+      <img src="icons/nora-logo.png" alt="NORA" class="logo" onerror="this.style.display='none'">
+      <div class="brand">NORA</div>
+    </div>
+    <a class="phone" href="tel:+18555546672" aria-label="Request a Dispatch">
+      <i class="icon">📞</i> (855)-554-6672
+    </a>
+  </div>
+
+  <div class="wrap">
+    <form id="noraForm" class="card" novalidate>
+      <div class="grid">
+        <!-- Customer: free text -->
+        <div>
+          <label for="customer">Customer</label>
+          <input id="customer" name="customer" placeholder="Enter customer name" />
+        </div>
+
+        <!-- Caller -->
+        <div class="grid cols-2">
+          <div>
+            <label for="callerName">Caller Name <span class="danger">*</span></label>
+            <input id="callerName" name="callerName" required />
+          </div>
+          <div>
+            <label for="callerNumber">Caller Phone Number <span class="danger">*</span></label>
+            <input id="callerNumber" name="callerNumber" inputmode="tel" required />
+          </div>
+        </div>
+
+        <!-- Date / Time / TZ (default ET) -->
+        <div class="grid cols-3">
+          <div>
+            <label for="date">Pick Up Date <span class="danger">*</span></label>
+            <input id="date" name="date" type="date" required />
+          </div>
+          <div>
+            <label for="pickUpTime">Pick Up Time <span class="danger">*</span></label>
+            <input id="pickUpTime" name="pickUpTime" type="time" required />
+          </div>
+          <div>
+            <label for="pickUpTimeZone">Time Zone <span class="danger">*</span></label>
+            <select id="pickUpTimeZone" name="pickUpTimeZone" required>
+              <option value="ET" selected>ET</option>
+              <option value="CT">CT</option>
+              <option value="MT">MT</option>
+              <option value="PT">PT</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- UNOS / OR -->
+        <div class="grid cols-3">
+          <div>
+            <label for="unosRef">UNOS or Ref#</label>
+            <input id="unosRef" name="unosRef" />
+          </div>
+          <div>
+            <label for="orTime">O.R. Time</label>
+            <input id="orTime" name="orTime" type="time" />
+          </div>
+          <div>
+            <label for="orTimeZone">O.R. Time Zone</label>
+            <select id="orTimeZone" name="orTimeZone">
+              <option value="">Select</option>
+              <option value="ET">ET</option><option value="CT">CT</option><option value="MT">MT</option><option value="PT">PT</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="secondaryCoordinator">Secondary Coordinator?</label>
+          <input id="secondaryCoordinator" name="secondaryCoordinator" placeholder="Name, Number, Hand-off Time" />
+        </div>
+
+        <!-- Transport -->
+        <div>
+          <label for="whatTransporting">What are we transporting?</label>
+          <select id="whatTransporting" name="whatTransporting">
+            <option value="">Select</option>
+            <option value="Organ">Organ</option>
+            <option value="Blood/Tissue Samples">Blood/Tissue Samples</option>
+            <option value="Equipment">Equipment</option>
+            <option value="Teams — specify">Teams — specify</option>
+            <option value="Other">Other</option>
+          </select>
+          <input id="whatTransportingOther" name="whatTransportingOther" placeholder="If Teams/Other, enter details" style="display:none; margin-top:8px">
+        </div>
+
+        <!-- Locations -->
+        <div>
+          <label for="pickUpLocation">Pick Up Location</label>
+          <textarea id="pickUpLocation" name="pickUpLocation" placeholder="Enter pickup location details"></textarea>
+        </div>
+
+        <div class="grid cols-2">
+          <div>
+            <label for="puOnsiteContact">P/U Onsite Contact</label>
+            <input id="puOnsiteContact" name="puOnsiteContact" />
+          </div>
+          <div>
+            <label for="puOnsiteLocation">P/U Onsite Location</label>
+            <input id="puOnsiteLocation" name="puOnsiteLocation" />
+          </div>
+        </div>
+
+        <div>
+          <label for="dropOffLocation">Drop Off Location</label>
+          <textarea id="dropOffLocation" name="dropOffLocation" placeholder="Enter drop off location details"></textarea>
+        </div>
+
+        <div class="grid cols-2">
+          <div>
+            <label for="doOnsiteContact">D/O Onsite Contact</label>
+            <input id="doOnsiteContact" name="doOnsiteContact" />
+          </div>
+          <div>
+            <label for="doOnsiteLocation">D/O Onsite Location</label>
+            <input id="doOnsiteLocation" name="doOnsiteLocation" />
+          </div>
+        </div>
+
+        <div>
+          <label for="miscellaneousInfo">Miscellaneous Information</label>
+          <textarea id="miscellaneousInfo" name="miscellaneousInfo" placeholder="Enter any additional information"></textarea>
+        </div>
+
+        <button id="submitBtn" class="btn" type="submit">Submit to Dispatch</button>
+        <div class="confirm-note">
+          After you press <b>Send</b> in your mail app, the confirmation will arrive in the
+          <b>inbox of the email account you sent from</b>.
+        </div>
+      </div>
+    </form>
+
+    <div class="hint" style="margin-top:14px">
+      <button id="clearBtn" type="button" style="background:none;border:1px solid var(--border);border-radius:10px;padding:6px 10px;color:#073c3e;cursor:pointer">Clear Saved Data</button>
+    </div>
+  </div>
+
+  <script>
+    const EMAIL = 'dispatch@nortrans.com'   // hard-locked recipient
+    const KEY = 'nora-form-data-web'
+    const form = document.getElementById('noraForm')
+    const clearBtn = document.getElementById('clearBtn')
+
+    // Transport “Other/Teams — specify” toggle
+    const what = document.getElementById('whatTransporting')
+    const whatOther = document.getElementById('whatTransportingOther')
+    function toggleOther(){
+      const v = what.value
+      whatOther.style.display = (v === 'Other' || v.startsWith('Teams')) ? '' : 'none'
+    }
+    what.addEventListener('change', toggleOther)
+
+    // Restore saved data
+    try{
+      const saved = JSON.parse(localStorage.getItem(KEY) || '{}')
+      for(const [k,v] of Object.entries(saved)){
+        const el = form.elements.namedItem(k)
+        if(!el) continue
+        if(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement || el instanceof HTMLSelectElement){ el.value = v }
+      }
+      toggleOther()
+    }catch{}
+
+    // Auto-save
+    form.addEventListener('input', ()=>{
+      const data = Object.fromEntries(new FormData(form).entries())
+      localStorage.setItem(KEY, JSON.stringify(data))
+    })
+
+    // Clear
+    clearBtn.addEventListener('click', ()=>{
+      localStorage.removeItem(KEY); form.reset(); toggleOther(); alert('Saved form data cleared.')
+    })
+
+    function fmtDate(iso){
+      if(!iso) return 'Not provided'
+      try{
+        const d = new Date(iso)
+        return new Intl.DateTimeFormat(undefined,{month:'2-digit',day:'2-digit',year:'numeric',weekday:'long'}).format(d)
+      }catch{ return String(iso) }
+    }
+
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault()
+      const data = Object.fromEntries(new FormData(form).entries())
+
+      const missing=[]
+      if(!data.callerName) missing.push('Caller Name')
+      if(!data.callerNumber) missing.push('Caller Phone Number')
+      if(!data.date) missing.push('Pick Up Date')
+      if(!data.pickUpTime) missing.push('Pick Up Time')
+      if(!data.pickUpTimeZone) missing.push('Time Zone')
+      if(missing.length){ alert('Please fill: ' + missing.join(', ')); return }
+
+      const transport = (data.whatTransporting === 'Other' || (data.whatTransporting||'').startsWith('Teams'))
+        ? (data.whatTransportingOther || data.whatTransporting)
+        : (data.whatTransporting || 'Not provided')
+
+      const body = `NORA Transportation Form Submission\n\n` +
+`Customer: ${data.customer || 'Not provided'}\n` +
+`Caller Name & Number: ${data.callerName || 'Not provided'} ${data.callerNumber || ''}\n\n` +
+`Date: ${fmtDate(data.date)}\n` +
+`Pick Up Time: ${data.pickUpTime || 'Not provided'} ${data.pickUpTimeZone || ''}\n\n` +
+`UNOS or Ref#: ${data.unosRef || 'Not provided'}\n` +
+`O.R. Time: ${data.orTime || 'Not provided'} ${data.orTimeZone || ''}\n\n` +
+`Secondary Coordinator: ${data.secondaryCoordinator || 'Not provided'}\n\n` +
+`What are we transporting:\n${transport}\n\n` +
+`Pick Up Location:\n${data.pickUpLocation || 'Not provided'}\n\n` +
+`P/U Onsite Contact: ${data.puOnsiteContact || 'Not provided'}\n` +
+`P/U Onsite Location: ${data.puOnsiteLocation || 'Not provided'}\n\n` +
+`Drop Off Location:\n${data.dropOffLocation || 'Not provided'}\n\n` +
+`D/O Onsite Contact: ${data.doOnsiteContact || 'Not provided'}\n` +
+`D/O Onsite Location: ${data.doOnsiteLocation || 'Not provided'}\n\n` +
+`Miscellaneous Information:\n${data.miscellaneousInfo || 'Not provided'}\n\n` +
+`---\nSent from NORA Mobile`
+
+      const subject = 'NORA Transportation Form Submission'
+      const MAX = 1800
+      const safeBody = body.length > MAX ? body.slice(0, MAX-30) + '\n...[truncated]' : body
+      const mailto = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(safeBody)}`
+      window.location.href = mailto
+
+      setTimeout(()=>{ localStorage.removeItem(KEY); form.reset(); toggleOther(); alert('Email opened. Form cleared.') }, 400)
+    })
+  </script>
+</body>
+</html>

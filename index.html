@@ -201,6 +201,40 @@ body{
 <link rel="manifest" href="/nora-mobile/manifest.webmanifest?v=20251029192447">
 <meta name="theme-color" content="#1a73e8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style id="nora-accents">
+:root { --banner-h: 56px; --rail-w: 6px; --nora-teal-a:#0b8f7b; --nora-teal-b:#18b39d; --nora-teal-c:#0fa58f; }
+body {
+  padding-top: calc(12px + var(--banner-h) + env(safe-area-inset-top)) !important;
+  padding-bottom: calc(12px + 10px + env(safe-area-inset-bottom)) !important;
+}
+
+/* Banner */
+body .nora-banner {
+  position: fixed !important; left: 0 !important; right: 0 !important; top: 0 !important; height: var(--banner-h) !important;
+  background: linear-gradient(90deg, var(--nora-teal-a), var(--nora-teal-b) 40%, var(--nora-teal-c)) !important;
+  box-shadow: 0 4px 18px rgba(0,0,0,.35) !important; z-index: 99998 !important; pointer-events: none !important;
+  border-bottom: 1px solid rgba(255,255,255,0.12) !important;
+}
+
+/* Bottom strip */
+body .nora-bottom {
+  position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important; height: 10px !important;
+  background: linear-gradient(90deg, var(--nora-teal-c), var(--nora-teal-b), var(--nora-teal-a)) !important;
+  box-shadow: 0 -2px 12px rgba(0,0,0,.30) !important; z-index: 99998 !important; pointer-events: none !important;
+  border-top: 1px solid rgba(255,255,255,0.10) !important;
+}
+
+/* Side rails (desktop only) */
+@media (min-width: 960px){
+  body .nora-side {
+    position: fixed !important; top: calc(var(--banner-h) + 6px) !important; bottom: 16px !important; width: var(--rail-w) !important;
+    background: linear-gradient(#18b39d44, #18b39d88, #18b39d44) !important; border-radius: 4px !important;
+    pointer-events: none !important; z-index: 99997 !important; box-shadow: 0 0 10px #18b39d55 !important;
+  }
+  body .nora-side.nora-left { left: 12px !important; }
+  body .nora-side.nora-right{ right: 12px !important; }
+}
+</style>
 </head>
 <body>
 <div class="nora-banner" aria-hidden="true"></div>
@@ -538,6 +572,7 @@ body{
 <div class="nora-side nora-right" aria-hidden="true"></div>
 </body>
 </html>
+
 
 
 

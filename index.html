@@ -99,6 +99,60 @@ form select, form textarea {
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 @media (max-width:600px){ .form-row{ grid-template-columns:1fr; } }
 #pickupDate,#pickupTime,#orTime,#callerPhone{ width:100%; max-width:100%; height:48px; }
+
+/* === NORA THEME – SHINE PATCH v1 === */
+:root{
+  --nora-teal: #18b39d; --nora-teal-2: #0fa58f; --nora-teal-3: #0b8f7b;
+  --nora-dark: #000000; --nora-surface: rgba(255,255,255,0.07);
+  --nora-border: rgba(255,255,255,0.12); --nora-text: #ffffff;
+  --nora-muted: rgba(255,255,255,0.75); --focus-ring: rgba(24,179,157,0.35);
+}
+html, body { height:100%; }
+body{
+  background:#000; color:var(--nora-text);
+  font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  line-height:1.5; padding:12px;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+}
+body::before{ content:""; position:fixed; top:0; left:0; right:0; height:4px; background:var(--nora-teal); z-index:9999; }
+.card, .form-card, .panel, .sheet{
+  background:var(--nora-surface); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  border:1px solid var(--nora-border); border-radius:16px; box-shadow:0 10px 30px rgba(0,0,0,0.25);
+  padding:16px; max-width:100%; overflow:hidden;
+}
+/* Field normalization (keeps your mobile fixes) */
+form input[type='text'], form input[type='tel'], form input[type='email'],
+form input[type='date'], form input[type='time'], form input[type='number'],
+form select, form textarea{
+  width:100%; max-width:100%; display:block; height:48px; padding:0.6rem 0.8rem;
+  border-radius:12px; font-size:16px; line-height:1.2; margin:8px 0;
+  -webkit-appearance:none; appearance:none;
+  border:1px solid var(--nora-border); background:rgba(255,255,255,0.06); color:var(--nora-text);
+  transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
+}
+form input::placeholder, form textarea::placeholder { color: rgba(255,255,255,0.55); }
+form input:focus, form select:focus, form textarea:focus{
+  outline:none; border-color:var(--nora-teal); box-shadow:0 0 0 3px var(--focus-ring); background:rgba(255,255,255,0.09);
+}
+form label{ color:var(--nora-muted); font-weight:600; margin:4px 0 6px; display:block; }
+.form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media (max-width:600px){ .form-row{ grid-template-columns:1fr; } }
+#pickupDate, #pickupTime, #orTime, #callerPhone { width:100%; max-width:100%; height:48px; }
+button, .btn, input[type="submit"]{
+  background:var(--nora-teal); color:#fff; border:none; border-radius:12px; height:48px; padding:0 16px;
+  font-weight:700; letter-spacing:.02em; cursor:pointer; transition:transform .12s, box-shadow .12s, background .12s;
+}
+button:hover, .btn:hover, input[type="submit"]:hover{
+  background:var(--nora-teal-2); transform:translateY(-1px); box-shadow:0 6px 16px rgba(24,179,157,0.35);
+}
+button:active, .btn:active, input[type="submit"]:active{
+  background:var(--nora-teal-3); transform:translateY(0); box-shadow:0 2px 8px rgba(0,0,0,0.35);
+}
+button:focus-visible, .btn:focus-visible, input[type="submit"]:focus-visible{ outline:none; box-shadow:0 0 0 3px var(--focus-ring); }
+a{ color:var(--nora-teal); text-decoration:none; } a:hover{ text-decoration:underline; }
+.section, .section--green, .section--blue{ padding:12px; overflow:hidden; border-radius:12px; }
+.small, small{ color:rgba(255,255,255,.7); }
+@media (prefers-reduced-motion:reduce){ *{ transition:none!important; animation:none!important; } }
 </style>
 
     <link rel="apple-touch-icon" sizes="180x180" href="/nora-mobile/apple-touch-icon-180.png?v=20251029192447">
@@ -370,8 +424,78 @@ form select, form textarea {
       setTimeout(()=>{ localStorage.removeItem(KEY); form.reset(); toggleOther(); alert('Email opened. Form cleared.') }, 400)
     })
   </script>
+<!-- NORA MAILTO BUILDER v1 -->
+<script>
+(function(){
+  const form = document.querySelector('form');
+  if(!form) return;
+
+  function get(name) {
+    const el = form.querySelector('[name="'+name+'"]');
+    if (!el) return '';
+    if (el.type === 'checkbox') return el.checked ? 'Yes' : 'No';
+    return (el.value || '').trim();
+  }
+  function labelFor(el){
+    if (!el) return '';
+    const id = el.id;
+    const viaFor = id ? (form.querySelector('label[for="'+id+'"]') || null) : null;
+    const viaWrap = el.closest('label');
+    const txt = (viaFor?.innerText || viaWrap?.innerText || el.name || '').trim();
+    return txt.replace(/\s*[:：]\s*$/, '');
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    // Pull important fields by likely names (adjusts if you rename)
+    const puDate = get('pickupDate') || get('PickupDate') || get('date') || '';
+    const puTime = get('pickupTime') || get('PickupTime') || get('time') || '';
+    const puLoc  = get('pickupLocation') || get('pickupAddress') || get('pickup') || '';
+    const orTime = get('orTime') || get('ORTime') || '';
+
+    const lines = [];
+
+    // Emphasized header block (plain text "bold")
+    if (puDate || puTime || puLoc) {
+      lines.push('*** PICK-UP DETAILS ***',
+                 (puDate ? ('Pick-Up Date: ' + puDate) : ''),
+                 (puTime ? ('Pick-Up Time: ' + puTime) : ''),
+                 (puLoc  ? ('Pick-Up Location: ' + puLoc) : '')
+      ).filter(Boolean);
+    }
+    if (orTime) {
+      lines.push('*** OR TIME: ' + orTime + ' ***');
+    }
+
+    // Add the rest, double-spaced
+    const skip = new Set(['pickupDate','PickupDate','date','pickupTime','PickupTime','time','pickupLocation','pickupAddress','pickup','orTime','ORTime']);
+    form.querySelectorAll('input, select, textarea').forEach(function(el){
+      if (!el.name || skip.has(el.name)) return;
+      const v = (el.type === 'checkbox') ? (el.checked ? 'Yes' : 'No') : (el.value || '').trim();
+      if (!v) return;
+      const label = labelFor(el) || el.name;
+      lines.push(label + ': ' + v);
+    });
+
+    // Double spacing: join with CRLF CRLF
+    const body = lines.join('\\r\\n\\r\\n');
+
+    // Build mailto
+    const to = 'dispatch@noratrans.com';
+    const subject = 'NORA Mobile Submission';
+    const href = 'mailto:' + encodeURIComponent(to)
+               + '?subject=' + encodeURIComponent(subject)
+               + '&body=' + encodeURIComponent(body);
+
+    window.location.href = href;
+  }, { once:false });
+})();
+</script>
+<!-- /NORA MAILTO BUILDER v1 -->
 </body>
 </html>
+
 
 
 

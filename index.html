@@ -391,6 +391,20 @@ html, body, .page, .site, .container, .wrap, .wrapper {
 .nora-frame form .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 @media (max-width:600px){ .nora-frame form .form-row{ grid-template-columns:1fr; } }
 </style>
+<style id="nora-kill-border-v9">
+/* Remove any outer teal border around the form, keep everything else the same */
+.nora-frame{ border:0 !important; box-shadow:none !important; }
+.nora-frame > form, form.nora-inner{
+  border:0 !important;                 /* goodbye teal line */
+  outline: none !important;            /* belt-and-suspenders */
+  box-shadow:none !important;          /* just in case a rim is left */
+  border-radius:20px !important;       /* keep the nice rounded shape */
+  background: var(--panel, #0b0b0b) !important;
+  padding:18px !important;             /* preserve spacing after removing border */
+}
+/* Safety: kill accidental page-edge borders */
+html, body { border:0 !important; outline:none !important; box-shadow:none !important; }
+</style>
 </head>
 <body>
 <div class="header">
@@ -812,6 +826,7 @@ html, body, .page, .site, .container, .wrap, .wrapper {
 <!-- /NORA HEADER TAGGER v7 -->
 </body>
 </html>
+
 
 
 

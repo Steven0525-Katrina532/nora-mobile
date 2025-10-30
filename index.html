@@ -327,6 +327,70 @@ body{ background:var(--bg); color:#fff; font-family:"Segoe UI",system-ui,-apple-
 /* Required star we added earlier */
 .nora-req-asterisk{ color:#ff6b6b; font-weight:900; margin-left:4px; }
 </style>
+<style id="nora-trim-v8">
+:root{
+  --nora-teal:#18b39d;
+  --panel:#0b0b0b;
+  --focus:rgba(24,179,157,0.35);
+}
+
+/* 0) Nuke any page/outer borders that might be hanging around */
+html, body, .page, .site, .container, .wrap, .wrapper {
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* 1) Remove OUTER panel border/shadow so only the inner line remains */
+.nora-frame{
+  background: var(--panel) !important;
+  border: 0 !important;          /* kill second line */
+  box-shadow: none !important;   /* kill glow/rim */
+  border-radius: 0 !important;   /* let the form's own radius define shape */
+  padding: 0 !important;         /* form will carry its own padding */
+  margin: 0 auto 24px !important;
+  max-width: 1100px !important;
+}
+
+/* 2) Put the SINGLE teal border on the FORM itself */
+.nora-frame > form, form.nora-inner {
+  background: var(--panel) !important;
+  border: 5px solid var(--nora-teal) !important;   /* single thicker line */
+  border-radius: 20px !important;
+  padding: 18px !important;
+}
+
+/* Safety: remove any fieldset borders that could look like a second line */
+.nora-frame form fieldset { border: 0 !important; }
+
+/* Labels high-contrast */
+.nora-frame form label { color:#fff !important; font-weight:800 !important; font-size:15.5px !important; }
+
+/* Inputs (same great contrast + teal focus) */
+.nora-frame form input[type="text"],
+.nora-frame form input[type="tel"],
+.nora-frame form input[type="email"],
+.nora-frame form input[type="date"],
+.nora-frame form input[type="time"],
+.nora-frame form input[type="number"],
+.nora-frame form select,
+.nora-frame form textarea{
+  background:#141414 !important; color:#fff !important;
+  border:1px solid rgba(255,255,255,0.22) !important;
+  height:48px !important; border-radius:12px !important; font-size:16px !important;
+}
+.nora-frame form input:focus,
+.nora-frame form select:focus,
+.nora-frame form textarea:focus{
+  border-color: var(--nora-teal) !important;
+  box-shadow: 0 0 0 3px var(--focus) !important;
+  outline:none !important;
+}
+
+/* Keep mobile stacking */
+.nora-frame form .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media (max-width:600px){ .nora-frame form .form-row{ grid-template-columns:1fr; } }
+</style>
 </head>
 <body>
 <div class="header">
@@ -748,6 +812,7 @@ body{ background:var(--bg); color:#fff; font-family:"Segoe UI",system-ui,-apple-
 <!-- /NORA HEADER TAGGER v7 -->
 </body>
 </html>
+
 
 
 

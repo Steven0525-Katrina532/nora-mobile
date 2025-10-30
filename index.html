@@ -250,96 +250,78 @@ form input:focus, form select:focus, form textarea:focus{
 <link rel="manifest" href="/nora-mobile/manifest.webmanifest?v=20251029192447">
 <meta name="theme-color" content="#1a73e8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style id="nora-flat-v5">
+<style id="nora-clean-v7">
 :root{
-  --nora-teal:#18b39d;         /* page background */
-  --nora-teal-2:#12a894;       /* slight hover */
-  --nora-dark:#000000;         /* header + form interior */
-  --nora-panel:#0b0b0b;        /* form inner */
+  --nora-teal:#18b39d;
+  --nora-teal-dark:#0fa58f;
+  --bg:#000000;
+  --panel:#0b0b0b;
   --focus:rgba(24,179,157,0.35);
 }
 
-/* Page background = teal, no 3D */
-html,body{height:100%;}
-body{
-  margin:0;
-  background: var(--nora-teal);
-  color:#fff;
-  font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
-  line-height:1.5;
-}
+/* Keep page black */
+body{ background:var(--bg); color:#fff; font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif; }
 
-/* Sticky black header that stays readable while scrolling */
-header, .site-header, .topbar{
+/* === Sticky teal behind existing header row (NORA + phone) === */
+.nora-header-teal{
   position: sticky; top: 0; z-index: 1000;
-  background: var(--nora-dark);
+  background: var(--nora-teal);   /* teal background behind header */
   color: #fff;
-  padding: 14px 20px;
-  border-bottom: none;
+  padding: 10px 16px;             /* modest height, readable, not huge */
+  box-shadow: 0 2px 10px rgba(0,0,0,.25);
 }
-/* Beef up brand text (fallbacks) */
-header .logo, header h1, header .brand{
-  font-weight: 900;
-  font-size: clamp(26px, 3.6vw, 40px);
-  letter-spacing:.02em;
+.nora-header-teal .brand, .nora-header-teal h1{
+  margin:0; font-weight:900; letter-spacing:.02em;
+  font-size: clamp(26px, 3.6vw, 38px);
   color:#fff;
-  margin: 0;
 }
-/* Make the phone pill bigger and clean */
-header a[href^="tel:"], header .call, header .call-link{
+.nora-header-teal a[href^="tel:"],
+.nora-header-teal .call, .nora-header-teal .call-link{
   display:inline-flex; align-items:center; gap:10px;
-  background:#ffffff; color:#0b8f7b;
-  padding: 10px 16px;
-  border-radius: 14px;
-  font-weight: 900;
-  text-decoration:none;
+  background:#ffffff; color:#0b8f7b; text-decoration:none;
+  padding: 10px 16px; border-radius:14px; font-weight:900;
   box-shadow: 0 2px 8px rgba(0,0,0,.25);
 }
 
-/* FORM: flat black interior, thin teal border, NO glow */
+/* === Form panel: ONE teal line, slightly thicker; no inner line, no glow === */
 .nora-frame{
-  background: var(--nora-panel);
-  border: 2px solid #0fa58f;
-  border-radius: 18px;
-  box-shadow: 0 2px 14px rgba(0,0,0,.35);   /* soft drop only */
+  background: var(--panel);
+  border: 5px solid var(--nora-teal);   /* thicker single line */
+  border-radius: 20px;
+  box-shadow: none;                     /* kill inner/outer glow */
   padding: 18px;
-  margin: 8px auto 24px;                    /* almost touches header */
+  margin: 12px auto 24px;
   max-width: 1100px;
 }
 
-/* Labels bright white, slightly larger */
+/* Labels bright white */
 .nora-frame label{
-  color:#ffffff;
-  font-weight:800;
-  font-size:15.5px;
+  color:#ffffff; font-weight:800; font-size:15.5px;
 }
 
-/* Inputs: high contrast; teal focus ring */
+/* Inputs high contrast + teal focus */
 .nora-frame input[type="text"], .nora-frame input[type="tel"], .nora-frame input[type="email"],
 .nora-frame input[type="date"], .nora-frame input[type="time"], .nora-frame input[type="number"],
 .nora-frame select, .nora-frame textarea{
-  background:#141414;
-  color:#fff;
-  border:1px solid rgba(255,255,255,0.22);
+  background:#141414; color:#fff; border:1px solid rgba(255,255,255,0.22);
   height:48px; border-radius:12px; font-size:16px;
 }
 .nora-frame input::placeholder, .nora-frame textarea::placeholder{ color:rgba(255,255,255,.72); }
 .nora-frame input:focus, .nora-frame select:focus, .nora-frame textarea:focus{
-  border-color:#18b39d; box-shadow:0 0 0 3px var(--focus); outline:none;
+  border-color: var(--nora-teal); box-shadow: 0 0 0 3px var(--focus); outline:none;
 }
 
-/* Grid stays nice on mobile */
+/* Keep mobile stacking tidy */
 .nora-frame .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 @media (max-width:600px){ .nora-frame .form-row{ grid-template-columns:1fr; } }
 
-/* Submit button: flat teal */
+/* Submit: flat teal */
 .nora-frame button, .nora-frame .btn, .nora-frame input[type="submit"]{
-  background:#18b39d; color:#000; border:none; height:48px; border-radius:12px; padding:0 16px;
+  background:var(--nora-teal); color:#000; border:none; height:48px; border-radius:12px; padding:0 16px;
   font-weight:900; letter-spacing:.02em; cursor:pointer;
-  transition: background .12s ease;
 }
 .nora-frame button:hover, .nora-frame .btn:hover, .nora-frame input[type="submit"]:hover{
-  background:#12a894;
+  background:var(--nora-teal-dark);
 }
 
 /* Required star we added earlier */
@@ -735,8 +717,38 @@ header a[href^="tel:"], header .call, header .call-link{
 })();
 </script>
 <!-- /NORA CUSTOMER REQUIRED v1 -->
+<!-- NORA HEADER TAGGER v7 -->
+<script>
+(function(){
+  var root = document;
+  // Prefer an existing <header>
+  var hdr = root.querySelector('header');
+  // Otherwise, find a container that holds the phone link
+  if (!hdr) {
+    var tel = root.querySelector('a[href^="tel:"]');
+    if (tel) {
+      // climb up a couple of levels to find a row-like container
+      var c = tel;
+      for (var i=0; i<3 && c && c.parentElement; i++){ c = c.parentElement; }
+      hdr = c || tel.parentElement;
+    }
+  }
+  if (hdr && !hdr.classList.contains('nora-header-teal')) {
+    hdr.classList.add('nora-header-teal');
+    // Try to mark a brand element so it sizes nicely
+    var brand = hdr.querySelector('.brand, h1, .logo');
+    if (!brand) {
+      // if NORA text is plain, wrap the first texty block
+      var first = hdr.querySelector('*');
+      if (first && !first.classList.contains('brand')) first.classList.add('brand');
+    }
+  }
+})();
+</script>
+<!-- /NORA HEADER TAGGER v7 -->
 </body>
 </html>
+
 
 
 

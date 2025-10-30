@@ -250,123 +250,22 @@ form input:focus, form select:focus, form textarea:focus{
 <link rel="manifest" href="/nora-mobile/manifest.webmanifest?v=20251029192447">
 <meta name="theme-color" content="#1a73e8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style id="nora-clean-v7">
-:root{
-  --nora-teal:#18b39d;
-  --nora-teal-dark:#0fa58f;
-  --bg:#000000;
-  --panel:#0b0b0b;
-  --focus:rgba(24,179,157,0.35);
-}
+<style id="nora-border-fix-v10">
+:root{ --nora-teal:#18b39d; --panel:#0b0b0b; --focus:rgba(24,179,157,0.35); }
 
-/* Keep page black */
-body{ background:var(--bg); color:#fff; font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif; }
+/* 1) Remove OUTER/page borders (keep layout as-is) */
+html, body, .page, .site, .container, .wrap, .wrapper { border:0 !important; outline:none !important; box-shadow:none !important; }
+.nora-frame { border:0 !important; box-shadow:none !important; }
 
-/* === Sticky teal behind existing header row (NORA + phone) === */
-.nora-header-teal{
-  position: sticky; top: 0; z-index: 1000;
-  background: var(--nora-teal);   /* teal background behind header */
-  color: #fff;
-  padding: 10px 16px;             /* modest height, readable, not huge */
-  box-shadow: 0 2px 10px rgba(0,0,0,.25);
-}
-.nora-header-teal .brand, .nora-header-teal h1{
-  margin:0; font-weight:900; letter-spacing:.02em;
-  font-size: clamp(26px, 3.6vw, 38px);
-  color:#fff;
-}
-.nora-header-teal a[href^="tel:"],
-.nora-header-teal .call, .nora-header-teal .call-link{
-  display:inline-flex; align-items:center; gap:10px;
-  background:#ffffff; color:#0b8f7b; text-decoration:none;
-  padding: 10px 16px; border-radius:14px; font-weight:900;
-  box-shadow: 0 2px 8px rgba(0,0,0,.25);
-}
-
-/* === Form panel: ONE teal line, slightly thicker; no inner line, no glow === */
-.nora-frame{
-  background: var(--panel);
-  border: 5px solid var(--nora-teal);   /* thicker single line */
-  border-radius: 20px;
-  box-shadow: none;                     /* kill inner/outer glow */
-  padding: 18px;
-  margin: 12px auto 24px;
-  max-width: 1100px;
-}
-
-/* Labels bright white */
-.nora-frame label{
-  color:#ffffff; font-weight:800; font-size:15.5px;
-}
-
-/* Inputs high contrast + teal focus */
-.nora-frame input[type="text"], .nora-frame input[type="tel"], .nora-frame input[type="email"],
-.nora-frame input[type="date"], .nora-frame input[type="time"], .nora-frame input[type="number"],
-.nora-frame select, .nora-frame textarea{
-  background:#141414; color:#fff; border:1px solid rgba(255,255,255,0.22);
-  height:48px; border-radius:12px; font-size:16px;
-}
-.nora-frame input::placeholder, .nora-frame textarea::placeholder{ color:rgba(255,255,255,.72); }
-.nora-frame input:focus, .nora-frame select:focus, .nora-frame textarea:focus{
-  border-color: var(--nora-teal); box-shadow: 0 0 0 3px var(--focus); outline:none;
-}
-
-/* Keep mobile stacking tidy */
-.nora-frame .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-@media (max-width:600px){ .nora-frame .form-row{ grid-template-columns:1fr; } }
-
-/* Submit: flat teal */
-.nora-frame button, .nora-frame .btn, .nora-frame input[type="submit"]{
-  background:var(--nora-teal); color:#000; border:none; height:48px; border-radius:12px; padding:0 16px;
-  font-weight:900; letter-spacing:.02em; cursor:pointer;
-}
-.nora-frame button:hover, .nora-frame .btn:hover, .nora-frame input[type="submit"]:hover{
-  background:var(--nora-teal-dark);
-}
-
-/* Required star we added earlier */
-.nora-req-asterisk{ color:#ff6b6b; font-weight:900; margin-left:4px; }
-</style>
-<style id="nora-trim-v8">
-:root{
-  --nora-teal:#18b39d;
-  --panel:#0b0b0b;
-  --focus:rgba(24,179,157,0.35);
-}
-
-/* 0) Nuke any page/outer borders that might be hanging around */
-html, body, .page, .site, .container, .wrap, .wrapper {
-  border: 0 !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* 1) Remove OUTER panel border/shadow so only the inner line remains */
-.nora-frame{
-  background: var(--panel) !important;
-  border: 0 !important;          /* kill second line */
-  box-shadow: none !important;   /* kill glow/rim */
-  border-radius: 0 !important;   /* let the form's own radius define shape */
-  padding: 0 !important;         /* form will carry its own padding */
-  margin: 0 auto 24px !important;
-  max-width: 1100px !important;
-}
-
-/* 2) Put the SINGLE teal border on the FORM itself */
+/* 2) Restore INNER teal border on the FORM itself */
 .nora-frame > form, form.nora-inner {
   background: var(--panel) !important;
-  border: 5px solid var(--nora-teal) !important;   /* single thicker line */
+  border: 5px solid var(--nora-teal) !important;   /* <- the one we want */
   border-radius: 20px !important;
-  padding: 18px !important;
+  padding: 18px !important;                         /* keep spacing */
 }
 
-/* Safety: remove any fieldset borders that could look like a second line */
-.nora-frame form fieldset { border: 0 !important; }
-
-/* Labels high-contrast */
-.nora-frame form label { color:#fff !important; font-weight:800 !important; font-size:15.5px !important; }
-
-/* Inputs (same great contrast + teal focus) */
+/* Inputs and focus (unchanged, just ensuring crisp UX) */
 .nora-frame form input[type="text"],
 .nora-frame form input[type="tel"],
 .nora-frame form input[type="email"],
@@ -386,24 +285,6 @@ html, body, .page, .site, .container, .wrap, .wrapper {
   box-shadow: 0 0 0 3px var(--focus) !important;
   outline:none !important;
 }
-
-/* Keep mobile stacking */
-.nora-frame form .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-@media (max-width:600px){ .nora-frame form .form-row{ grid-template-columns:1fr; } }
-</style>
-<style id="nora-kill-border-v9">
-/* Remove any outer teal border around the form, keep everything else the same */
-.nora-frame{ border:0 !important; box-shadow:none !important; }
-.nora-frame > form, form.nora-inner{
-  border:0 !important;                 /* goodbye teal line */
-  outline: none !important;            /* belt-and-suspenders */
-  box-shadow:none !important;          /* just in case a rim is left */
-  border-radius:20px !important;       /* keep the nice rounded shape */
-  background: var(--panel, #0b0b0b) !important;
-  padding:18px !important;             /* preserve spacing after removing border */
-}
-/* Safety: kill accidental page-edge borders */
-html, body { border:0 !important; outline:none !important; box-shadow:none !important; }
 </style>
 </head>
 <body>
@@ -826,6 +707,7 @@ html, body { border:0 !important; outline:none !important; box-shadow:none !impo
 <!-- /NORA HEADER TAGGER v7 -->
 </body>
 </html>
+
 
 
 

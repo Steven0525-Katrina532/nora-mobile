@@ -250,6 +250,59 @@ form input:focus, form select:focus, form textarea:focus{
 <link rel="manifest" href="/nora-mobile/manifest.webmanifest?v=20251029192447">
 <meta name="theme-color" content="#1a73e8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style id="nora-color-v3">
+:root{
+  --nora-teal:#18b39d; --nora-teal-2:#0fa58f; --nora-teal-3:#0b8f7b;
+  --nora-bg:#000000; --nora-panel:#0b0b0b; --focus:rgba(24,179,157,0.35);
+}
+body{ background: var(--nora-bg) !important; }
+
+/* Frame the entire form area in teal, no fixed header overlays */
+.nora-frame{
+  background: var(--nora-panel) !important;
+  border: 3px solid var(--nora-teal) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 0 0 1px rgba(24,179,157,0.35), 0 12px 36px rgba(24,179,157,0.18) !important;
+  padding: 18px !important;
+  margin: 16px auto !important;
+  max-width: 1100px !important;
+}
+
+/* Bright labels for readability */
+.nora-frame label{
+  color:#ffffff !important;
+  font-weight:800 !important;
+  letter-spacing:.01em;
+}
+
+/* Inputs: ensure contrast + teal focus ring */
+.nora-frame input[type="text"], .nora-frame input[type="tel"], .nora-frame input[type="email"],
+.nora-frame input[type="date"], .nora-frame input[type="time"], .nora-frame input[type="number"],
+.nora-frame select, .nora-frame textarea{
+  background: rgba(255,255,255,0.06) !important;
+  color:#fff !important;
+  border:1px solid rgba(255,255,255,0.22) !important;
+  height:48px; border-radius:12px; font-size:16px;
+}
+.nora-frame input::placeholder, .nora-frame textarea::placeholder{ color:rgba(255,255,255,0.7) !important; }
+.nora-frame input:focus, .nora-frame select:focus, .nora-frame textarea:focus{
+  border-color: var(--nora-teal) !important;
+  box-shadow: 0 0 0 3px var(--focus) !important; outline: none !important;
+}
+
+/* Grid keeps mobile stacking */
+.nora-frame .form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media (max-width:600px){ .nora-frame .form-row{ grid-template-columns:1fr; } }
+
+/* Make the header (if present) white with a thin teal underline, WITHOUT covering it */
+header, .site-header, .topbar{
+  background:#fff !important; color:#000 !important;
+  border-bottom: 3px solid var(--nora-teal) !important;
+}
+
+/* Required asterisk (if our JS added it) */
+.nora-req-asterisk{ color:#ff6b6b; font-weight:900; margin-left:4px; }
+</style>
 </head>
 <body>
 <div class="header">
@@ -261,7 +314,7 @@ form input:focus, form select:focus, form textarea:focus{
   </div>
 
   <div class="wrap">
-    <form id="noraForm" class="card" novalidate>
+    <div class="nora-frame"><form id="noraForm" class="card" novalidate>
       <div class="grid">
         <!-- Customer -->
         <div>
@@ -400,7 +453,7 @@ form input:focus, form select:focus, form textarea:focus{
           <b>inbox of the email account you sent from</b>.
         </div>
       </div>
-    </form>
+    </form></div>
 
     <div class="hint" style="margin-top:14px">
       <button id="clearBtn" type="button" style="background:none;border:1px solid var(--border);border-radius:10px;padding:6px 10px;color:#073c3e;cursor:pointer">Clear Saved Data</button>
@@ -642,6 +695,7 @@ form input:focus, form select:focus, form textarea:focus{
 <!-- /NORA CUSTOMER REQUIRED v1 -->
 </body>
 </html>
+
 
 
 

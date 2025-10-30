@@ -4,7 +4,7 @@
 What this is
 ------------
 A single web page (index.html) that collects transport details and opens the device’s email app to send them to:
-  dispatch@nortrans.com  (locked recipient)
+  dispatch@noratrans.com  (locked recipient)
 
 Supported browsers
 ------------------
@@ -16,7 +16,7 @@ How to use (quick)
 ------------------
 1) Open: https://steven0525-katrina532.github.io/nora-mobile/
 2) Fill Caller Name, Phone, Date, Time (TZ defaults to ET).
-3) Tap **Submit to Dispatch** – your mail app opens addressed to dispatch@nortrans.com with the message pre-filled.
+3) Tap **Submit to Dispatch** – your mail app opens addressed to dispatch@noratrans.com with the message pre-filled.
 4) Press **Send** in your mail app. (If you close the draft, nothing is sent.)
 5) A confirmation reply from Dispatch will arrive in the **inbox of the email account you sent from**.
 
@@ -71,3 +71,4 @@ Support
 -------
 - Phone: (855)-554-6672 (tap-to-call button in header)
 - Questions about this page: reply to the sender who shared this link or contact the project owner.
+

@@ -192,6 +192,55 @@ body{
   .nora-side.nora-left{ left: 12px; }
   .nora-side.nora-right{ right: 12px; }
 }
+
+/* === NORA – Header & Form Frame v1 === */
+
+/* Reset the paddings we added before so header is not hidden */
+body { padding-top: 12px !important; padding-bottom: 12px !important; background:#000 !important; }
+
+/* If there's a site header, make it white with dark text (non-destructive) */
+header, .site-header, .topbar {
+  background:#fff !important;
+  color:#000 !important;
+  border-bottom: 3px solid #18b39d !important; /* thin teal accent under the white header */
+}
+
+/* Form frame: teal border + subtle glow on black surface */
+form {
+  background: #0b0b0b !important;
+  border: 2px solid #18b39d !important;
+  border-radius: 16px !important;
+  box-shadow: 0 0 0 1px rgba(24,179,157,0.35), 0 8px 28px rgba(24,179,157,0.18) !important;
+  padding: 16px !important;
+  max-width: 100% !important;
+}
+
+/* Labels: bright white for readability */
+form label {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* Required asterisk style */
+.nora-req-asterisk { color:#ff6b6b; margin-left:4px; font-weight:800; }
+
+/* Inputs keep the earlier normalization and focus, but ensure contrast on this black surface */
+form input[type='text'], form input[type='tel'], form input[type='email'],
+form input[type='date'], form input[type='time'], form input[type='number'],
+form select, form textarea{
+  background: rgba(255,255,255,0.06) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,0.22) !important;
+}
+form input::placeholder, form textarea::placeholder { color: rgba(255,255,255,0.65) !important; }
+form input:focus, form select:focus, form textarea:focus{
+  border-color: #18b39d !important;
+  box-shadow: 0 0 0 3px rgba(24,179,157,0.35) !important;
+}
+
+/* Keep our mobile grid behavior */
+.form-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media (max-width:600px){ .form-row{ grid-template-columns:1fr; } }
 </style>
 
     <link rel="apple-touch-icon" sizes="180x180" href="/nora-mobile/apple-touch-icon-180.png?v=20251029192447">
@@ -201,44 +250,9 @@ body{
 <link rel="manifest" href="/nora-mobile/manifest.webmanifest?v=20251029192447">
 <meta name="theme-color" content="#1a73e8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style id="nora-accents">
-:root { --banner-h: 56px; --rail-w: 6px; --nora-teal-a:#0b8f7b; --nora-teal-b:#18b39d; --nora-teal-c:#0fa58f; }
-body {
-  padding-top: calc(12px + var(--banner-h) + env(safe-area-inset-top)) !important;
-  padding-bottom: calc(12px + 10px + env(safe-area-inset-bottom)) !important;
-}
-
-/* Banner */
-body .nora-banner {
-  position: fixed !important; left: 0 !important; right: 0 !important; top: 0 !important; height: var(--banner-h) !important;
-  background: linear-gradient(90deg, var(--nora-teal-a), var(--nora-teal-b) 40%, var(--nora-teal-c)) !important;
-  box-shadow: 0 4px 18px rgba(0,0,0,.35) !important; z-index: 99998 !important; pointer-events: none !important;
-  border-bottom: 1px solid rgba(255,255,255,0.12) !important;
-}
-
-/* Bottom strip */
-body .nora-bottom {
-  position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important; height: 10px !important;
-  background: linear-gradient(90deg, var(--nora-teal-c), var(--nora-teal-b), var(--nora-teal-a)) !important;
-  box-shadow: 0 -2px 12px rgba(0,0,0,.30) !important; z-index: 99998 !important; pointer-events: none !important;
-  border-top: 1px solid rgba(255,255,255,0.10) !important;
-}
-
-/* Side rails (desktop only) */
-@media (min-width: 960px){
-  body .nora-side {
-    position: fixed !important; top: calc(var(--banner-h) + 6px) !important; bottom: 16px !important; width: var(--rail-w) !important;
-    background: linear-gradient(#18b39d44, #18b39d88, #18b39d44) !important; border-radius: 4px !important;
-    pointer-events: none !important; z-index: 99997 !important; box-shadow: 0 0 10px #18b39d55 !important;
-  }
-  body .nora-side.nora-left { left: 12px !important; }
-  body .nora-side.nora-right{ right: 12px !important; }
-}
-</style>
 </head>
 <body>
-<div class="nora-banner" aria-hidden="true"></div>
-  <div class="header">
+<div class="header">
     <div class="h-left">
       <img src="icons/nora-logo.png" alt="NORA" class="logo" onerror="this.style.display='none'">
       <div class="brand">NORA</div>
@@ -567,11 +581,68 @@ body .nora-bottom {
 })();
 </script>
 <!-- /NORA MAILTO BUILDER v1 -->
-<div class="nora-bottom" aria-hidden="true"></div>
-<div class="nora-side nora-left" aria-hidden="true"></div>
-<div class="nora-side nora-right" aria-hidden="true"></div>
+<!-- NORA CUSTOMER REQUIRED v1 -->
+<script>
+(function(){
+  const form = document.querySelector('form');
+  if(!form) return;
+
+  // try to find the "Customer Name" input via label text first
+  function findCustomerInput(){
+    const labels = Array.from(form.querySelectorAll('label'));
+    for (const lb of labels) {
+      const t = (lb.innerText || "").trim();
+      if (/customer\s*name/i.test(t)) {
+        // for=id or wrapped input
+        if (lb.htmlFor) {
+          const byFor = form.querySelector('#'+CSS.escape(lb.htmlFor));
+          if (byFor) return byFor;
+        }
+        const wrapped = lb.querySelector('input,textarea,select');
+        if (wrapped) return wrapped;
+      }
+    }
+    // fallback: common names/ids
+    const candidates = ['customerName','customer_name','customer','name','CustomerName','Customer','Name'];
+    for (const key of candidates) {
+      const el = form.querySelector('[name="'+key+'"], #'+CSS.escape(key));
+      if (el) return el;
+    }
+    return null;
+  }
+
+  const cust = findCustomerInput();
+  if (cust) {
+    // add required attributes
+    cust.setAttribute('required','required');
+    cust.setAttribute('aria-required','true');
+
+    // add visible red asterisk on its label
+    let lb = null;
+    if (cust.id) lb = form.querySelector('label[for="'+cust.id+'"]');
+    if (!lb) lb = cust.closest('label');
+    if (lb && !lb.querySelector('.nora-req-asterisk')) {
+      const star = document.createElement('span');
+      star.className = 'nora-req-asterisk';
+      star.textContent = ' *';
+      lb.appendChild(star);
+    }
+
+    // guard on submit
+    form.addEventListener('submit', function(ev){
+      if (!cust.value || !cust.value.trim()) {
+        ev.preventDefault();
+        cust.focus();
+        alert('Please enter the Customer Name before submitting.');
+      }
+    });
+  }
+})();
+</script>
+<!-- /NORA CUSTOMER REQUIRED v1 -->
 </body>
 </html>
+
 
 
 
